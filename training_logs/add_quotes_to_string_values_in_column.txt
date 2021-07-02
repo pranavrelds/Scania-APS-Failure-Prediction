@@ -1,0 +1,6 @@
+2021-07-01/20:35:15		 ApsFailure_10051992_120210.csv: Quotes added successfully!!
+2021-07-01/20:35:15		 ApsFailure_10051993_120211.csv: Quotes added successfully!!
+2021-07-01/20:35:15		 ApsFailure_10051994_120212.csv: Quotes added successfully!!
+2021-07-01/20:35:16		 ApsFailure_10051995_120213.csv: Quotes added successfully!!
+2021-07-01/20:35:16		 ApsFailure_10051996_120214.csv: Quotes added successfully!!
+2021-07-01/20:35:16		 ApsFailure_10051997_120215.csv: Quotes added successfully!!

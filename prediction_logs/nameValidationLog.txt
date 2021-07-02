@@ -1,0 +1,27 @@
+2021-07-01/23:21:51		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051998_120216.csv
+2021-07-01/23:21:51		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051999_120217.csv
+2021-07-01/23:21:51		Error occured while validating FileName [Errno 2] No such file or directory: 'prediction_batch_files/phising_080020_120.csv'
+2021-07-02/10:27:47		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051998_120216.csv
+2021-07-02/10:27:47		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051999_120217.csv
+2021-07-02/10:27:47		Invalid File Name!! File moved to Bad Raw Folder :: random_080020_120.csv
+2021-07-02/10:34:26		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051998_120216.csv
+2021-07-02/10:34:26		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051999_120217.csv
+2021-07-02/10:34:26		Invalid File Name!! File moved to Bad Raw Folder :: random_080020_120.csv
+2021-07-02/11:11:02		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051998_120216.csv
+2021-07-02/11:11:02		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051999_120217.csv
+2021-07-02/11:11:02		Invalid File Name!! File moved to Bad Raw Folder :: random_080020_120.csv
+2021-07-02/11:13:57		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051998_120216.csv
+2021-07-02/11:13:57		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051999_120217.csv
+2021-07-02/11:13:57		Invalid File Name!! File moved to Bad Raw Folder :: random_080020_120.csv
+2021-07-02/11:15:30		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051998_120216.csv
+2021-07-02/11:15:30		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051999_120217.csv
+2021-07-02/11:15:30		Invalid File Name!! File moved to Bad Raw Folder :: random_080020_120.csv
+2021-07-02/11:19:34		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051998_120216.csv
+2021-07-02/11:19:34		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051999_120217.csv
+2021-07-02/11:19:34		Invalid File Name!! File moved to Bad Raw Folder :: random_080020_120.csv
+2021-07-02/11:20:32		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051998_120216.csv
+2021-07-02/11:20:32		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051999_120217.csv
+2021-07-02/11:20:32		Invalid File Name!! File moved to Bad Raw Folder :: random_080020_120.csv
+2021-07-02/11:24:10		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051998_120216.csv
+2021-07-02/11:24:10		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051999_120217.csv
+2021-07-02/11:24:10		Invalid File Name!! File moved to Bad Raw Folder :: random_080020_120.csv
