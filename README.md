@@ -18,4 +18,4 @@ After the installation, use following command to run the code.
 python main.py 
 ```
 
-[Video of App working using API](https://youtu.be/-BORxvawrjE)
+[Video - App working using API](https://youtu.be/-BORxvawrjE)
