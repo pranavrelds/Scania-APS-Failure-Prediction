@@ -160,7 +160,7 @@
 				"dz_000": "FLOAT",
 				"ea_000": "FLOAT",
 				"eb_000": "FLOAT",
-				"ec_00": "FLOAT",
+				"ec_00"	: "FLOAT",
 				"ed_000": "FLOAT",
 				"ee_000": "FLOAT",
 				"ee_001": "FLOAT",
