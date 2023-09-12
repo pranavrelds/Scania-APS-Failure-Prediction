@@ -1,4 +1,0 @@
-2021-07-01/20:35:14		Column Length Validation Started!!
-2021-07-01/20:35:14		Invalid Column Length for the file!! File moved to Bad Raw Folder :: ApsFailure_11052001_120219.csv
-2021-07-01/20:35:14		Invalid Column Length for the file!! File moved to Bad Raw Folder :: ApsFailure_13052002_120220.csv
-2021-07-01/20:35:14		Column Length Validation Completed!!

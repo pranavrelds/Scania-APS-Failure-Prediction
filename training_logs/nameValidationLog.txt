@@ -1,9 +1,0 @@
-2021-07-01/20:35:14		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051992_120210.csv
-2021-07-01/20:35:14		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051993_120211.csv
-2021-07-01/20:35:14		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051994_120212.csv
-2021-07-01/20:35:14		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051995_120213.csv
-2021-07-01/20:35:14		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051996_120214.csv
-2021-07-01/20:35:14		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_10051997_120215.csv
-2021-07-01/20:35:14		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_11052001_120219.csv
-2021-07-01/20:35:14		Valid File name!! File moved to GoodRaw Folder :: ApsFailure_13052002_120220.csv
-2021-07-01/20:35:14		Invalid File Name!! File moved to Bad Raw Folder :: ApsFailure_152000_120218.csv
