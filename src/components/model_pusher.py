@@ -1,52 +1,44 @@
-from src.ml.model_resolver import ModelResolver
-from src.entity.config_entity import ModelPusherConfig
-from src.exception import SensorException
-import os,sys
-from src.utils import load_object,save_object
+
+from src.exception import apsException
 from src.logger import logging
-from src.entity.artifact_entity import DataTransformationArtifact,ModelTrainerArtifact,ModelPusherArtifact
+from src.entity.artifact_entity import ModelPusherArtifact,ModelTrainerArtifact,ModelEvaluationArtifact
+from src.entity.config_entity import ModelEvaluationConfig,ModelPusherConfig
+import os,sys
+from src.ml.metric.classification_metric import get_classification_score
+from src.utils.main_utils import save_object,load_object,write_yaml_file
+
+import shutil
+
 class ModelPusher:
 
-    def __init__(self,model_pusher_config:ModelPusherConfig,
-                        data_transformation_artifact:DataTransformationArtifact,
-                        model_trainer_artifact:ModelTrainerArtifact):
+    def __init__(self,
+                model_pusher_config:ModelPusherConfig,
+                model_eval_artifact:ModelEvaluationArtifact):
+
         try:
-            logging.info(f"{'>>'*20} Model Pusher {'<<'*20}")
-            self.model_pusher_config=model_pusher_config
-            self.data_transformation_artifact=data_transformation_artifact
-            self.model_trainer_artifact=model_trainer_artifact
-            self.model_resolver = ModelResolver(model_registry=self.model_pusher_config.saved_model_dir)
-        except Exception as e:
-            raise SensorException(e, sys)
+            self.model_pusher_config = model_pusher_config
+            self.model_eval_artifact = model_eval_artifact
+        except  Exception as e:
+            raise apsException(e, sys)
+    
 
     def initiate_model_pusher(self,)->ModelPusherArtifact:
         try:
-            #load object
-            logging.info(f"Loading transformer model and target encoder")
-            transformer = load_object(file_path=self.data_transformation_artifact.transform_object_path)
-            model = load_object(file_path=self.model_trainer_artifact.model_path)
-            target_encoder = load_object(file_path=self.data_transformation_artifact.target_encoder_path)
-
-            #model pusher dir
-            logging.info(f"Saving model into model pusher directory")
-            save_object(file_path=self.model_pusher_config.pusher_transformer_path, obj=transformer)
-            save_object(file_path=self.model_pusher_config.pusher_model_path, obj=model)
-            save_object(file_path=self.model_pusher_config.pusher_target_encoder_path, obj=target_encoder)
-
+            trained_model_path = self.model_eval_artifact.trained_model_path
+            
+            #Creating model pusher dir to save model
+            model_file_path = self.model_pusher_config.model_file_path
+            os.makedirs(os.path.dirname(model_file_path),exist_ok=True)
+            shutil.copy(src=trained_model_path, dst=model_file_path)
 
             #saved model dir
-            logging.info(f"Saving model in saved model dir")
-            transformer_path=self.model_resolver.get_latest_save_transformer_path()
-            model_path=self.model_resolver.get_latest_save_model_path()
-            target_encoder_path=self.model_resolver.get_latest_save_target_encoder_path()
-        
-            save_object(file_path=transformer_path, obj=transformer)
-            save_object(file_path=model_path, obj=model)
-            save_object(file_path=target_encoder_path, obj=target_encoder)
+            saved_model_path = self.model_pusher_config.saved_model_path
+            os.makedirs(os.path.dirname(saved_model_path),exist_ok=True)
+            shutil.copy(src=trained_model_path, dst=saved_model_path)
 
-            model_pusher_artifact = ModelPusherArtifact(pusher_model_dir=self.model_pusher_config.pusher_model_dir,
-            saved_model_dir=self.model_pusher_config.saved_model_dir)
-            logging.info(f"Model pusher artifact: {model_pusher_artifact}")
+            #prepare artifact
+            model_pusher_artifact = ModelPusherArtifact(saved_model_path=saved_model_path, model_file_path=model_file_path)
             return model_pusher_artifact
-        except Exception as e:
-            raise SensorException(e, sys)
+        except  Exception as e:
+            raise apsException(e, sys)
+    

@@ -1,84 +1,81 @@
-from src.entity.config_entity import ModelTrainerConfig
-from src.entity.artifact_entity import DataTransformationArtifact,ModelTrainerArtifact
-from src.logger import logging
-from src.exception import SensorException
-import os,sys 
-from xgboost import XGBClassifier
-from sklearn.metrics import f1_score
-from src.utils import load_numpy_array_data,save_object
 
+from src.utils.main_utils import load_numpy_array_data
+from src.exception import apsException
+from src.logger import logging
+from src.entity.artifact_entity import DataTransformationArtifact,ModelTrainerArtifact
+from src.entity.config_entity import ModelTrainerConfig
+import os,sys
+from xgboost import XGBClassifier
+from src.ml.metric.classification_metric import get_classification_score
+from src.ml.model.estimator import apsModel
+from src.utils.main_utils import save_object,load_object
 class ModelTrainer:
 
-
     def __init__(self,model_trainer_config:ModelTrainerConfig,
-                data_transformation_artifact:DataTransformationArtifact
-                ):
+        data_transformation_artifact:DataTransformationArtifact):
         try:
-            logging.info(f"{'>>'*20} Model Trainer {'<<'*20}")
             self.model_trainer_config=model_trainer_config
             self.data_transformation_artifact=data_transformation_artifact
-
         except Exception as e:
-            raise SensorException(e, sys)
+            raise apsException(e,sys)
 
+    def perform_hyper_paramter_tunig(self):...
     
-    @staticmethod
-    def train_model(x,y):
+
+    def train_model(self,x_train,y_train):
         try:
-            xgb_clf =  XGBClassifier()
-            xgb_clf.fit(x,y)
+            xgb_clf = XGBClassifier()
+            xgb_clf.fit(x_train,y_train)
             return xgb_clf
         except Exception as e:
-            raise SensorException(e, sys)
-
-    def initiate_model_trainer(self,)->ModelTrainerArtifact:
+            raise e
+    
+    def initiate_model_trainer(self)->ModelTrainerArtifact:
         try:
-            logging.info(f"Loading train and test array.")
-            train_arr = load_numpy_array_data(file_path=self.data_transformation_artifact.transform_train_path)
-            test_arr = load_numpy_array_data(file_path=self.data_transformation_artifact.transform_test_path)
+            train_file_path = self.data_transformation_artifact.transformed_train_file_path
+            test_file_path = self.data_transformation_artifact.transformed_test_file_path
 
+            #loading training array and testing array
+            train_arr = load_numpy_array_data(train_file_path)
+            test_arr = load_numpy_array_data(test_file_path)
+
+            x_train, y_train, x_test, y_test = (
+                train_arr[:, :-1],
+                train_arr[:, -1],
+                test_arr[:, :-1],
+                test_arr[:, -1],
+            )
+
+            model = self.train_model(x_train, y_train)
+            y_train_pred = model.predict(x_train)
+            classification_train_metric =  get_classification_score(y_true=y_train, y_pred=y_train_pred)
             
-            logging.info(f"Splitting input and target feature from both train and test arr.")
-            x_train,y_train = train_arr[:,:-1],train_arr[:,-1]
-            x_test,y_test = test_arr[:,:-1],test_arr[:,-1]
-
+            if classification_train_metric.f1_score<=self.model_trainer_config.expected_accuracy:
+                raise Exception("Trained model is not good to provide expected accuracy")
             
-            logging.info(f"Train the model")
-            model = ModelTrainer.train_model(x=x_train,y=y_train)
+            y_test_pred = model.predict(x_test)
+            classification_test_metric = get_classification_score(y_true=y_test, y_pred=y_test_pred)
 
-            logging.info(f"Calculating f1 train score")
-            yhat_train = model.predict(x_train)
-            f1_train_score  =f1_score(y_true=y_train, y_pred=yhat_train)
 
+            #Overfitting and Underfitting
+            diff = abs(classification_train_metric.f1_score-classification_test_metric.f1_score)
             
-            logging.info(f"Calculating f1 test score")
-            yhat_test = model.predict(x_test)
-            f1_test_score  =f1_score(y_true=y_test, y_pred=yhat_test)
+            if diff>self.model_trainer_config.overfitting_underfitting_threshold:
+                raise Exception("Model is not good try to do more experimentation.")
 
-            logging.info(f"train score:{f1_train_score} and tests score {f1_test_score}")
-
-            logging.info(f"Checking if our model is underfitting or not")
-            if f1_test_score<self.model_trainer_config.expected_score:
-                raise Exception(f"Model is not good as it is not able to give \
-                expected accuracy: {self.model_trainer_config.expected_score}: model actual score: {f1_test_score}")
-
-            logging.info(f"Checking if our model is overfiiting or not")
-            diff = abs(f1_train_score-f1_test_score)
+            preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
             
-            if diff>self.model_trainer_config.overfitting_threshold:
-                raise Exception(f"Train and test score diff: {diff} is more than overfitting threshold {self.model_trainer_config.overfitting_threshold}")
+            model_dir_path = os.path.dirname(self.model_trainer_config.trained_model_file_path)
+            os.makedirs(model_dir_path,exist_ok=True)
+            aps_model = apsModel(preprocessor=preprocessor,model=model)
+            save_object(self.model_trainer_config.trained_model_file_path, obj=aps_model)
 
-            #save the trained model
-            logging.info(f"Saving mode object")
-            save_object(file_path=self.model_trainer_config.model_path, obj=model)
+            #model trainer artifact
 
-            
-            #prepare artifact
-            logging.info(f"Prepare the artifact")
-            model_trainer_artifact  = ModelTrainerArtifact(model_path=self.model_trainer_config.model_path, 
-            f1_train_score=f1_train_score, f1_test_score=f1_test_score)
+            model_trainer_artifact = ModelTrainerArtifact(trained_model_file_path=self.model_trainer_config.trained_model_file_path, 
+            train_metric_artifact=classification_train_metric,
+            test_metric_artifact=classification_test_metric)
             logging.info(f"Model trainer artifact: {model_trainer_artifact}")
             return model_trainer_artifact
         except Exception as e:
-            raise SensorException(e, sys)
-
+            raise apsException(e,sys)

@@ -1,30 +1,23 @@
 from setuptools import find_packages,setup
 from typing import List
-NAME="scania-aps-failure-prediction"
-VERSION="0.0.1"
-AUTHOR="pranav"
-AUTHOR_EMAIL_ID="pranavrelds@gmail.com"
-REQUIREMENTS_FILE_NAME="requirements.txt"
-HYPHEN_E_DOT="-e ."
 
-def get_requirements(file_path:str=REQUIREMENTS_FILE_NAME)->List[str]:
-    requirements=[]
+def get_requirements()->List[str]:
+    """
+    This function will return list of requirements
+    """
+    requirement_list:List[str] = []
 
-    with open(file_path) as file_obj:
-        requirements = file_obj.readlines()
-        requirements = [req.replace("\n","") for req in requirements]
+    """
+    Write a code to read requirements.txt file and append each requirements in requirement_list variable.
+    """
+    return requirement_list
 
-    if HYPHEN_E_DOT in requirements:
-        requirements.remove(HYPHEN_E_DOT)
-    
-    return requirements
-
-
-setup(name=NAME,
-version=VERSION,
-author=AUTHOR,
-author_email=AUTHOR_EMAIL_ID,
-packages=find_packages(),
-install_requires = get_requirements() #['pandas','numpy','scikit-learn','pymongo']
+setup(
+    name="aps_failure_prediction",
+    version="0.0.1",
+    author="Pranav Tondgonkar",
+    author_email="pranavrelds@gmail.com",
+    packages = find_packages(),
+    install_requires=get_requirements(),#["pymongo==4.2.0"],
 )
 
