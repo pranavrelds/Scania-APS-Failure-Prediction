@@ -22,15 +22,15 @@ The goal of this binary classification problem is to determine whether a failure
 
 
 ## Data Collections
-![image](images\data_collection.png)
+![image](images/data_collection.png)
 
 
 ## Project Archietecture
-![image](images\overall_archietecture.png)
+![image](images/overall_archietecture.png)
 
 
 ## Deployment Archietecture
-![image](images\deployment.png)
+![image](images/deployment.png)
 
 
 ### Step 1: Clone the repository
